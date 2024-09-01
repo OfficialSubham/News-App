@@ -2,22 +2,19 @@ import React, { Component } from "react";
 
 export class NewsItem extends Component {
   render() {
-    let { title, description } = this.props;
+    let { title, description, imageUrl, newsUrl } = this.props;
     return (
       <>
-        <div class="card" style={{width: "18rem"}}>
-          <img
-            src="https://ichef.bbci.co.uk/news/1024/branded_sport/27d8/live/96a5ec10-5940-11ef-94ec-63bde61d9499.jpg"
-            class="card-img-top"
-            alt="..."
-          />
-          <div class="card-body">
-            <h5 class="card-title">{title}</h5>
-            <p class="card-text">
-                {description}
-            </p>
-            
+        <div className="card" style={{ width: "18rem" }}>
+          <img src={imageUrl} className="card-img-top" alt="..." />
+          <div className="card-body">
+            <h5 className="card-title">{title}</h5>
+            <p className="card-text">{description}</p>
+           
           </div>
+          <a href={newsUrl} className="btn btn-primary" style={{margin: "0 30px 10px 30px"}}>
+              Read more
+            </a>
         </div>
       </>
     );

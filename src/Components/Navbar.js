@@ -6,7 +6,7 @@ export class Navbar extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark" style={{height: "80px"}}>
+      <nav className="navbar fixed-top navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
             NEWS | OfficialSubham
@@ -36,7 +36,7 @@ export class Navbar extends Component {
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="/">
-                  Pricing
+                  Headline
                 </a>
               </li>
     
