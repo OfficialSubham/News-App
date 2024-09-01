@@ -101,20 +101,41 @@ export class News extends Component {
     this.state = {
       articles: [],
       loading: false,
+      page: 1,
     };
     // this.state.articles.forEach((article) => {
     //   console.log(article);
     // });
   }
 
-  async componentDidMount() {
-    let url =
-      "https://newsapi.org/v2/top-headlines?q=trump&apiKey=d379076a66e4496eba44a1d3f0522c4a";
+  async componentDidMount(paraPage = 1) {
+    let url = `https://newsapi.org/v2/top-headlines?q=trump&apiKey=d379076a66e4496eba44a1d3f0522c4a&page=${paraPage}&pageSize=9`;
     let newsData = await fetch(url);
-    let jsonNews = await newsData.json()
-    console.log(jsonNews);
-    this.setState({articles: jsonNews.articles})
+    let jsonNews = await newsData.json();
+    // console.log(jsonNews);
+    this.setState({ articles: jsonNews.articles, totalPages:  jsonNews.totalResults});
   }
+
+  handleNextClick = () => {
+    let page = this.state.page + 1
+    if(this.state.totalPages > Math.ceil(this.state.totalPages / 9 * page)){
+      this.setState({page: page});
+      // console.log(page);
+      this.componentDidMount(page);
+    }
+    else {
+      document.querySelector(".js-next-button").setAttribute("disabled", "true")
+    }
+   
+  };
+  handlePreviousClick = () => {
+    let page = this.state.page - 1
+    this.setState({page: page});
+    // console.log(this.state.page);
+    this.componentDidMount(page);
+    document.querySelector(".js-next-button").removeAttribute("disabled")
+    
+  };
 
   render() {
     return (
@@ -133,23 +154,41 @@ export class News extends Component {
           <div className="container my-4">
             <div className="row g-4">
               {this.state.articles.map((newsObject) => {
-                if(newsObject.content !== "[Removed]") {
-                  return (
+                return (
+                  newsObject.urlToImage && (
                     <div
                       className="col d-flex justify-content-evenly"
                       key={newsObject.url}
                     >
                       <NewsItem
-                        title={!newsObject.title? "": newsObject.title}
-                        description={!newsObject.description ? "": newsObject.description}
-                        imageUrl={!newsObject.urlToImage? "https://i.cbc.ca/1.7308593.1724981955!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_620/election-2020-protests-detroit.jpg": newsObject.urlToImage}
+                        title={!newsObject.title ? "" : newsObject.title}
+                        description={
+                          !newsObject.description ? "" : newsObject.description
+                        }
+                        imageUrl={newsObject.urlToImage}
                         newsUrl={newsObject.url}
                       />
                     </div>
-                  );
-                }
-                
+                  )
+                );
               })}
+            </div>
+            <div className="container d-flex justify-content-between my-4">
+              <button
+                type="button"
+                disabled={this.state.page <= 1}
+                className="btn btn-dark"
+                onClick={this.handlePreviousClick}
+              >
+                &larr; Previous
+              </button>
+              <button
+                type="button"
+                className="btn btn-dark js-next-button"
+                onClick={this.handleNextClick}
+              >
+                Next &rarr;
+              </button>
             </div>
           </div>
         </div>
