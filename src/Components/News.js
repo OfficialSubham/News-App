@@ -3,6 +3,8 @@ import NewsItem from "./NewsItem";
 import Loading from "./Loading";
 import PropTypes from "prop-types";
 
+
+
 export class News extends Component {
   // articles = [
   //   {
@@ -101,7 +103,7 @@ export class News extends Component {
   static defaultProps = {
     country: "in",
     pageSize: 5,
-    category: "science",
+    category: "general",
   };
 
   static propTypes = {
@@ -189,6 +191,8 @@ export class News extends Component {
                             : newsObject.urlToImage
                         }
                         newsUrl={newsObject.url}
+                        publishedAt={newsObject.publishedAt}
+                        author={newsObject.author}
                       />
                     </div>
                   );

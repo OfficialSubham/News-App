@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 // import PropTypes from 'prop-types'
+import {Link} from "react-router-dom"
 
 export class Navbar extends Component {
   static propTypes = {};
@@ -19,9 +20,9 @@ export class Navbar extends Component {
         data-bs-theme="dark"
       >
         <div className="container-fluid">
-          <a className="navbar-brand" href="/">
+          <Link className="navbar-brand" to="/">
             NEWS | OfficialSubham
-          </a>
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -36,34 +37,34 @@ export class Navbar extends Component {
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="/">
+                <Link className="nav-link" aria-current="page" to="/">
                   Home
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/">
+                <Link className="nav-link" to="/sports">
                   Sports
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/">
+                <Link className="nav-link" to="/business">
                   Business
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/">
+                <Link className="nav-link" to="/entertainment">
                   Entertainment
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/">
+                <Link className="nav-link" to="/science">
                   Science
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/">
+                <Link className="nav-link" to="/technology">
                   Technology
-                </a>
+                </Link>
               </li>
               <div className="dropdown js-drop-menu">
                 <a
@@ -81,15 +82,15 @@ export class Navbar extends Component {
                   style={{ cursor: "pointer" }}
                   // onClick={changeCountry}
                 >
-                  <li className="mx-2" data-country-code="in">
+                  <Link className="mx-2" to="/india">
                     India
-                  </li>
-                  <li className="mx-2" data-country-code="us">
+                  </Link>
+                  <Link className="mx-2" to="/us">
                     UnitedStates
-                  </li>
-                  <li className="mx-2" data-country-code="fr">
+                  </Link>
+                  <Link className="mx-2" to="/france">
                     France
-                  </li>
+                  </Link>
                 </ul>
               </div>
             </ul>
