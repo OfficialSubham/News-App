@@ -5,11 +5,20 @@ import Navbar from "./Components/Navbar";
 import News from "./Components/News";
 
 export default class App extends Component {
+
+  // constructor() {
+  //   super()
+  //   this.state = {
+  //     country: "us"
+  //   }
+
+  // }
+
   render() {
     return (
       <>
-        <Navbar />
-        <News pageSize={5}/>
+        <Navbar/>
+        <News />
       </>
     );
   }

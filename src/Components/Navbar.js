@@ -5,8 +5,19 @@ export class Navbar extends Component {
   static propTypes = {};
 
   render() {
+
+    // let changeCountry = (e) => {
+    //   let countryCode = String(e.target.dataset.countryCode);
+    //   console.log(countryCode);
+    //   console.log(this.props.state);
+    //   this.props.setState({country: countryCode});
+    // }
+    
     return (
-      <nav className="navbar sticky-top navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+      <nav
+        className="navbar sticky-top navbar-expand-lg bg-body-tertiary"
+        data-bs-theme="dark"
+      >
         <div className="container-fluid">
           <a className="navbar-brand" href="/">
             NEWS | OfficialSubham
@@ -31,15 +42,56 @@ export class Navbar extends Component {
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="/">
-                  Features
+                  Sports
                 </a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" href="/">
-                  Headline
+                  Business
                 </a>
               </li>
-    
+              <li className="nav-item">
+                <a className="nav-link" href="/">
+                  Entertainment
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/">
+                  Science
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/">
+                  Technology
+                </a>
+              </li>
+              <div className="dropdown js-drop-menu">
+                <a
+                  className="btn btn-secondary dropdown-toggle"
+                  href="/"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Country
+                </a>
+
+                <ul
+                  className="dropdown-menu "
+                  style={{ cursor: "pointer" }}
+                  // onClick={changeCountry}
+                >
+                  <li className="mx-2" data-country-code="in">
+                    India
+                  </li>
+                  <li className="mx-2" data-country-code="us">
+                    UnitedStates
+                  </li>
+                  <li className="mx-2" data-country-code="fr">
+                    France
+                  </li>
+                </ul>
+              </div>
             </ul>
           </div>
         </div>

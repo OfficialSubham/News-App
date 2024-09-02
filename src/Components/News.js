@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import NewsItem from "./NewsItem";
 import Loading from "./Loading";
+import PropTypes from "prop-types";
 
 export class News extends Component {
   // articles = [
@@ -97,6 +98,18 @@ export class News extends Component {
   //   },
   // ];
 
+  static defaultProps = {
+    country: "in",
+    pageSize: 5,
+    category: "science",
+  };
+
+  static propTypes = {
+    country: PropTypes.string,
+    pageSize: PropTypes.number,
+    category: PropTypes.string,
+  };
+
   constructor() {
     super();
     this.state = {
@@ -110,35 +123,35 @@ export class News extends Component {
   }
 
   async componentDidMount(paraPage = 1) {
-    this.setState({loading: true})
-    let url = `https://newsapi.org/v2/top-headlines?q=trump&apiKey=01e4baf027f24d3cb8eb06ad2ec9dc56&page=${paraPage}&pageSize=${this.props.pageSize}`;
+    this.setState({ loading: true });
+    let url = `https://newsapi.org/v2/top-headlines?category=${this.props.category}&country=${this.props.country}&apiKey=01e4baf027f24d3cb8eb06ad2ec9dc56&page=${paraPage}&pageSize=${this.props.pageSize}`;
     let newsData = await fetch(url);
     let jsonNews = await newsData.json();
     // console.log(jsonNews);
-    this.setState({ articles: jsonNews.articles, totalPages:  jsonNews.totalResults, loading: false});
+    this.setState({
+      articles: jsonNews.articles,
+      totalPages: jsonNews.totalResults,
+      loading: false,
+    });
   }
 
   handleNextClick = () => {
-    let page = this.state.page + 1
-    if(page > Math.ceil(this.state.totalPages / this.props.pageSize)){
+    let page = this.state.page + 1;
+    if (!(page > Math.ceil(this.state.totalPages / this.props.pageSize))) {
       // document.querySelector(".js-next-button").setAttribute("disabled", "true")
       // console.log(page);
-    }
-    else {
-      this.setState({page: page});
+      this.setState({ page: page });
       // console.log(page);
       this.componentDidMount(page);
       // console.log();
     }
-   
   };
   handlePreviousClick = () => {
-    let page = this.state.page - 1
-    this.setState({page: page});
+    let page = this.state.page - 1;
+    this.setState({ page: page });
     // console.log(this.state.page);
     this.componentDidMount(page);
     // document.querySelector(".js-next-button").removeAttribute("disabled")
-    
   };
 
   render() {
@@ -153,16 +166,14 @@ export class News extends Component {
       //     <NewsItem />
       //   </div>
       <>
-
-    
         <div className="container">
           <h1 className="my-3 text-center">Breaking News</h1>
           <div className="container my-4">
             <div className="row g-4">
               {this.state.loading && <Loading />}
-              {!this.state.loading &&this.state.articles.map((newsObject) => {
-                return (
-                  newsObject.urlToImage && (
+              {!this.state.loading &&
+                this.state.articles.map((newsObject) => {
+                  return (
                     <div
                       className="col d-flex justify-content-evenly"
                       key={newsObject.url}
@@ -172,13 +183,16 @@ export class News extends Component {
                         description={
                           !newsObject.description ? "" : newsObject.description
                         }
-                        imageUrl={newsObject.urlToImage}
+                        imageUrl={
+                          !newsObject.urlToImage
+                            ? "https://images.bild.de/66d2e4eae61b032a420a980d/9b655d74fbee7121f7698d4e1ddfb2d4,afd732c1?w=1280"
+                            : newsObject.urlToImage
+                        }
                         newsUrl={newsObject.url}
                       />
                     </div>
-                  )
-                );
-              })}
+                  );
+                })}
             </div>
             <div className="container d-flex justify-content-between my-4">
               <button
@@ -193,7 +207,12 @@ export class News extends Component {
                 type="button"
                 className="btn btn-dark js-next-button"
                 onClick={this.handleNextClick}
-                disabled={this.state.page + 1 > Math.ceil(this.state.totalPages / this.props.pageSize)? true : false}
+                disabled={
+                  this.state.page + 1 >
+                  Math.ceil(this.state.totalPages / this.props.pageSize)
+                    ? true
+                    : false
+                }
               >
                 Next &rarr;
               </button>
