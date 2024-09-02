@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import NewsItem from "./NewsItem";
+import Loading from "./Loading";
 
 export class News extends Component {
   // articles = [
@@ -109,22 +110,25 @@ export class News extends Component {
   }
 
   async componentDidMount(paraPage = 1) {
-    let url = `https://newsapi.org/v2/top-headlines?q=trump&apiKey=d379076a66e4496eba44a1d3f0522c4a&page=${paraPage}&pageSize=9`;
+    this.setState({loading: true})
+    let url = `https://newsapi.org/v2/top-headlines?q=trump&apiKey=01e4baf027f24d3cb8eb06ad2ec9dc56&page=${paraPage}&pageSize=${this.props.pageSize}`;
     let newsData = await fetch(url);
     let jsonNews = await newsData.json();
     // console.log(jsonNews);
-    this.setState({ articles: jsonNews.articles, totalPages:  jsonNews.totalResults});
+    this.setState({ articles: jsonNews.articles, totalPages:  jsonNews.totalResults, loading: false});
   }
 
   handleNextClick = () => {
     let page = this.state.page + 1
-    if(this.state.totalPages > Math.ceil(this.state.totalPages / 9 * page)){
+    if(page > Math.ceil(this.state.totalPages / this.props.pageSize)){
+      // document.querySelector(".js-next-button").setAttribute("disabled", "true")
+      // console.log(page);
+    }
+    else {
       this.setState({page: page});
       // console.log(page);
       this.componentDidMount(page);
-    }
-    else {
-      document.querySelector(".js-next-button").setAttribute("disabled", "true")
+      // console.log();
     }
    
   };
@@ -133,7 +137,7 @@ export class News extends Component {
     this.setState({page: page});
     // console.log(this.state.page);
     this.componentDidMount(page);
-    document.querySelector(".js-next-button").removeAttribute("disabled")
+    // document.querySelector(".js-next-button").removeAttribute("disabled")
     
   };
 
@@ -149,11 +153,14 @@ export class News extends Component {
       //     <NewsItem />
       //   </div>
       <>
+
+    
         <div className="container">
-          <h1 className="my-3 d-flex justify-content-center">Breaking News</h1>
+          <h1 className="my-3 text-center">Breaking News</h1>
           <div className="container my-4">
             <div className="row g-4">
-              {this.state.articles.map((newsObject) => {
+              {this.state.loading && <Loading />}
+              {!this.state.loading &&this.state.articles.map((newsObject) => {
                 return (
                   newsObject.urlToImage && (
                     <div
@@ -186,6 +193,7 @@ export class News extends Component {
                 type="button"
                 className="btn btn-dark js-next-button"
                 onClick={this.handleNextClick}
+                disabled={this.state.page + 1 > Math.ceil(this.state.totalPages / this.props.pageSize)? true : false}
               >
                 Next &rarr;
               </button>
