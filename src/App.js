@@ -18,7 +18,7 @@ export default class App extends Component {
     return (
       <>
         <Router>
-          <Navbar />
+        <Navbar searchNews={this.searchNews}/>
           <Routes>
             <Route path="/" element={<News key="home" />} />
             <Route

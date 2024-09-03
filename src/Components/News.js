@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import NewsItem from "./NewsItem";
 import Loading from "./Loading";
 import PropTypes from "prop-types";
-
-
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export class News extends Component {
   // articles = [
@@ -100,6 +99,18 @@ export class News extends Component {
   //   },
   // ];
 
+  // static searchNews() {
+
+  //   try {
+  //     let search = document.querySelector(".js-form-search").value
+  //     console.log(search);
+  //     this.searchFunction(search)
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+
+  // }
+
   static defaultProps = {
     country: "in",
     pageSize: 5,
@@ -112,21 +123,66 @@ export class News extends Component {
     category: PropTypes.string,
   };
 
-  constructor() {
-    super();
+  firstLetterCapital(word) {
+    return word[0].toUpperCase() + word.slice(1);
+  }
+
+  constructor(props) {
+    super(props);
     this.state = {
       articles: [],
       loading: false,
       page: 1,
+      totalPages: 0,
     };
     // this.state.articles.forEach((article) => {
     //   console.log(article);
     // });
+    document.title = `${this.firstLetterCapital(this.props.category)} - NEWS`;
   }
 
-  async componentDidMount(paraPage = 1) {
+  fetchMoreData = async () => {
+    let page = this.state.page + 1;
+    
+      // this.setState({ loading: true });
+      let url = `https://newsapi.org/v2/top-headlines?category=${this.props.category}&country=${this.props.country}&apiKey=d379076a66e4496eba44a1d3f0522c4a&page=${page}&pageSize=${this.props.pageSize}`;
+  
+      let newsData = await fetch(url);
+      let jsonNews = await newsData.json();
+      // console.log(jsonNews);
+      this.setState({
+        page: page,
+        articles: this.state.articles.concat(jsonNews.articles),
+        totalPages: jsonNews.totalResults,
+        // loading: false,
+      });
+    
+    // else {
+    //   this.setState({loading: false})
+    //   // console.log(document.querySelector(".js-infinite-scroll").lastChild.removeChild());
+    // }
+
+
+    // console.log(this.state.articles.length);
+  };
+
+  // async searchFunction(search="apple") {
+  //   this.setState({ loading: true });
+  //   let url = `https://newsapi.org/v2/top-headlines?q=health&country=${this.props.country}&apiKey=d379076a66e4496eba44a1d3f0522c4a&page=1&pageSize=${this.props.pageSize}`;
+  //   let newsData = await fetch(url);
+  //   let jsonNews = await newsData.json();
+  //   console.log(jsonNews);
+  //   this.setState({
+  //     articles: jsonNews.articles,
+  //     totalPages: jsonNews.totalResults,
+  //     loading: false,
+  //   });
+  // }
+
+  async componentDidMount() {
     this.setState({ loading: true });
-    let url = `https://newsapi.org/v2/top-headlines?category=${this.props.category}&country=${this.props.country}&apiKey=01e4baf027f24d3cb8eb06ad2ec9dc56&page=${paraPage}&pageSize=${this.props.pageSize}`;
+    let url = `https://newsapi.org/v2/top-headlines?category=${this.props.category}&country=${this.props.country}&apiKey=d379076a66e4496eba44a1d3f0522c4a&page=1&pageSize=${this.props.pageSize}`;
+
     let newsData = await fetch(url);
     let jsonNews = await newsData.json();
     // console.log(jsonNews);
@@ -135,26 +191,28 @@ export class News extends Component {
       totalPages: jsonNews.totalResults,
       loading: false,
     });
+
+    // console.log(this.state.articles.length);
   }
 
-  handleNextClick = () => {
-    let page = this.state.page + 1;
-    if (!(page > Math.ceil(this.state.totalPages / this.props.pageSize))) {
-      // document.querySelector(".js-next-button").setAttribute("disabled", "true")
-      // console.log(page);
-      this.setState({ page: page });
-      // console.log(page);
-      this.componentDidMount(page);
-      // console.log();
-    }
-  };
-  handlePreviousClick = () => {
-    let page = this.state.page - 1;
-    this.setState({ page: page });
-    // console.log(this.state.page);
-    this.componentDidMount(page);
-    // document.querySelector(".js-next-button").removeAttribute("disabled")
-  };
+  // handleNextClick = () => {
+  //   let page = this.state.page + 1;
+  //   if (!(page > Math.ceil(this.state.totalPages / this.props.pageSize))) {
+  //     // document.querySelector(".js-next-button").setAttribute("disabled", "true")
+  //     // console.log(page);
+  //     this.setState({ page: page });
+  //     // console.log(page);
+  //     this.componentDidMount(page);
+  //     // console.log();
+  //   }
+  // };
+  // handlePreviousClick = () => {
+  //   let page = this.state.page - 1;
+  //   this.setState({ page: page });
+  //   // console.log(this.state.page);
+  //   this.componentDidMount(page);
+  //   // document.querySelector(".js-next-button").removeAttribute("disabled")
+  // };
 
   render() {
     return (
@@ -171,34 +229,7 @@ export class News extends Component {
         <div className="container">
           <h1 className="my-3 text-center">Breaking News</h1>
           <div className="container my-4">
-            <div className="row g-4">
-              {this.state.loading && <Loading />}
-              {!this.state.loading &&
-                this.state.articles.map((newsObject) => {
-                  return (
-                    <div
-                      className="col d-flex justify-content-evenly"
-                      key={newsObject.url}
-                    >
-                      <NewsItem
-                        title={!newsObject.title ? "" : newsObject.title}
-                        description={
-                          !newsObject.description ? "" : newsObject.description
-                        }
-                        imageUrl={
-                          !newsObject.urlToImage
-                            ? "https://images.bild.de/66d2e4eae61b032a420a980d/9b655d74fbee7121f7698d4e1ddfb2d4,afd732c1?w=1280"
-                            : newsObject.urlToImage
-                        }
-                        newsUrl={newsObject.url}
-                        publishedAt={newsObject.publishedAt}
-                        author={newsObject.author}
-                      />
-                    </div>
-                  );
-                })}
-            </div>
-            <div className="container d-flex justify-content-between my-4">
+            {/* <div className="container d-flex justify-content-between my-4">
               <button
                 type="button"
                 disabled={this.state.page <= 1}
@@ -220,7 +251,46 @@ export class News extends Component {
               >
                 Next &rarr;
               </button>
-            </div>
+            </div> */}
+
+            <InfiniteScroll
+              dataLength={this.state.articles.length}
+              next={this.fetchMoreData}
+              hasMore={this.state.articles.length < this.state.totalPages}
+              loader={<Loading />}
+              // className="js-infinite-scroll"
+            >
+              <div className="container">
+                <div className="row g-4">
+                  {this.state.loading && <Loading />}
+                  {this.state.articles.map((newsObject) => {
+                    return (
+                      <div
+                        className="col d-flex justify-content-evenly"
+                        key={newsObject.url}
+                      >
+                        <NewsItem
+                          title={!newsObject.title ? "" : newsObject.title}
+                          description={
+                            !newsObject.description
+                              ? ""
+                              : newsObject.description
+                          }
+                          imageUrl={
+                            !newsObject.urlToImage
+                              ? "https://images.bild.de/66d2e4eae61b032a420a980d/9b655d74fbee7121f7698d4e1ddfb2d4,afd732c1?w=1280"
+                              : newsObject.urlToImage
+                          }
+                          newsUrl={newsObject.url}
+                          publishedAt={newsObject.publishedAt}
+                          author={newsObject.author}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </InfiniteScroll>
           </div>
         </div>
       </>

@@ -1,20 +1,23 @@
 import React, { Component } from "react";
 // import PropTypes from 'prop-types'
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
+// import News from "./News";
 
 export class Navbar extends Component {
   static propTypes = {};
 
-  render() {
 
+
+  render() {
     // let changeCountry = (e) => {
     //   let countryCode = String(e.target.dataset.countryCode);
     //   console.log(countryCode);
     //   console.log(this.props.state);
     //   this.props.setState({country: countryCode});
     // }
-    
+
     return (
+    
       <nav
         className="navbar sticky-top navbar-expand-lg bg-body-tertiary"
         data-bs-theme="dark"
@@ -94,6 +97,22 @@ export class Navbar extends Component {
                 </ul>
               </div>
             </ul>
+          </div>
+
+          <div className="d-flex">
+            <input
+              className="form-control me-2 js-form-search"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button
+              className="btn btn-outline-success js-search-button"
+              type="submit"
+              // onClick={News.searchNews}
+            >
+              Search
+            </button>
           </div>
         </div>
       </nav>
