@@ -99,7 +99,7 @@ export class Navbar extends Component {
             </ul>
           </div>
 
-          <div className="d-flex">
+          {/* <div className="d-flex">
             <input
               className="form-control me-2 js-form-search"
               type="search"
@@ -113,7 +113,7 @@ export class Navbar extends Component {
             >
               Search
             </button>
-          </div>
+          </div> */}
         </div>
       </nav>
     );
