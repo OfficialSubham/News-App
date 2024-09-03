@@ -15,6 +15,8 @@ export default class App extends Component {
 
   // }
   
+  api = process.env.REACT_APP_NEWS_API;
+
   state = {
     progress:0
   }
@@ -36,36 +38,36 @@ export default class App extends Component {
             // onLoaderFinished={() => {this.setProgress(0); console.log(this.state);}}
           />
           <Routes>
-            <Route path="/" element={<News setProgress={this.setProgress} key="home" />} />
+            <Route path="/" element={<News api={this.api}setProgress={this.setProgress} key="home" />} />
             <Route
               path="/home"
-              element={<News setProgress={this.setProgress} key="general" category="general" />}
+              element={<News api={this.api}setProgress={this.setProgress} key="general" category="general" />}
             />
             <Route
               path="/sports"
-              element={<News setProgress={this.setProgress} key="sports" category="sports" />}
+              element={<News api={this.api}setProgress={this.setProgress} key="sports" category="sports" />}
             />
             <Route
               path="/business"
-              element={<News setProgress={this.setProgress} key="business" category="business" />}
+              element={<News api={this.api}setProgress={this.setProgress} key="business" category="business" />}
             />
             <Route
               path="/science"
-              element={<News setProgress={this.setProgress} key="science" category="science" />}
+              element={<News api={this.api}setProgress={this.setProgress} key="science" category="science" />}
             />
             <Route
               path="/entertainment"
-              element={<News setProgress={this.setProgress} key="entertainment" category="entertainment" />}
+              element={<News api={this.api}setProgress={this.setProgress} key="entertainment" category="entertainment" />}
             />
             <Route
               path="/technology"
-              element={<News setProgress={this.setProgress} key="technology" category="technology" />}
+              element={<News api={this.api}setProgress={this.setProgress} key="technology" category="technology" />}
             />
-            <Route path="/india" element={<News setProgress={this.setProgress} key="india" country="in" />} />
-            <Route path="/us" element={<News setProgress={this.setProgress} key="us" country="us" />} />
+            <Route path="/india" element={<News api={this.api}setProgress={this.setProgress} key="india" country="in" />} />
+            <Route path="/us" element={<News api={this.api}setProgress={this.setProgress} key="us" country="us" />} />
             <Route
               path="/france"
-              element={<News setProgress={this.setProgress} key="france" country="fr" />}
+              element={<News api={this.api}setProgress={this.setProgress} key="france" country="fr" />}
             />
           </Routes>
         </Router>
